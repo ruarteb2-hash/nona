@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>¡Nuestra Boda!</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=pacifico&family=inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* Estilos CSS Modificados para Boda */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family:'inter',sans-serif;
+      /* Fondo rosa pálido */
+      background: linear-gradient(135deg, #FFF0F5 0%, #FFECF5 30%, #FFE4E1 70%, #FFF0F5 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .full-height{min-height:100vh}
+    .center-screen{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      text-align:center;
+      padding:24px;
+      transition: opacity 0.4s ease-out; 
+      /* Fondo blanco/rosa transparente */
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 240, 245, 0.9) 50%, rgba(255, 230, 235, 0.95) 100%);
+      color: #333;
+    }
+    
+    .welcome-card {
+        background: rgba(255, 248, 250, 0.65); 
+        backdrop-filter: blur(5px); 
+        border-radius: 20px;
+        padding: 30px 40px;
+        /* Borde rosa claro */
+        border: 2px solid rgba(255, 182, 193, 0.7); 
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1); 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .welcome-emojis {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px; 
+    }
+
+    .welcome-emojis span {
+      font-size: clamp(25px, 5vw, 45px); 
+      display: inline-block;
+      animation: shake 2s ease-in-out infinite;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.1); 
+    }
+    .welcome-emojis span:nth-child(1) { animation-delay: 0s; }
+    .welcome-emojis span:nth-child(2) { animation-delay: 0.2s; }
+    .welcome-emojis span:nth-child(3) { animation-delay: 0.4s; }
+    .welcome-emojis span:nth-child(4) { animation-delay: 0.6s; }
+    .welcome-emojis span:nth-child(5) { animation-delay: 0.8s; }
+
+    .welcome-title{
+      font-family:'pacifico',cursive;
+      font-size:clamp(28px,6vw,56px);
+      /* Degradado rosa */
+      background: linear-gradient(to right, #D81B60, #F06292); 
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:1px 1px 8px rgba(216, 27, 96, 0.5);
+      margin-top: 0; 
+      margin-bottom: 10px; 
+    }
+    .welcome-sub{
+      font-family:'pacifico',cursive; 
+      font-size:clamp(18px,3vw,26px); 
+      margin-top:0px;
+      font-weight:normal; 
+      /* Degradado rosa */
+      background: linear-gradient(to right, #D81B60, #F06292); 
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-shadow:1px 1px 8px rgba(216, 27, 96, 0.5);
+      line-height: 1.2;
+    }
+    
+    .enter-btn{
+        background: rgba(255, 248, 250, 0.65); 
+        backdrop-filter: blur(5px); 
+        /* Borde rosa claro */
+        border: 2px solid rgba(255, 182, 193, 0.7); 
+        box-shadow: 0 8px 30px rgba(0,0,0,0.1); 
+        color: transparent; 
+        padding:15px 15px; 
+        border-radius:20px; 
+        font-weight:800;
+        cursor:pointer;
+        transition: all 0.2s ease-in-out;
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        gap: 5px; 
+        min-height: 65px; 
+        max-width: 220px; 
+        width: 90%; 
+        margin: 22px auto 0 auto; 
+        box-sizing: border-box; 
+    }
+    .enter-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(0,0,0,0.2); 
+        /* Borde rosa más fuerte al pasar el mouse */
+        border-color: #F06292; 
+    }
+
+    .enter-btn-text {
+        font-family: 'pacifico', cursive;
+        font-size: clamp(22px, 6vw, 36px); 
+        /* Degradado rosa */
+        background: linear-gradient(to right, #D81B60, #F06292); 
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 1px 1px 8px rgba(216, 27, 96, 0.5); 
+        line-height: 1.1; 
+        display: block; 
+        text-align: center; 
+    }
+    
+    .invitation{
+      display:none;
+      padding:20px;
+      box-sizing:border-box;
+      opacity: 0; 
+      transition: opacity 0.4s ease-in;
+    }
+
+    /* Tarjeta principal rosa */
+    .card{width:100%;max-width:980px;margin:24px auto;background:rgba(255, 248, 250, 0.92);border-radius:20px;padding:20px;box-shadow:0 10px 40px rgba(255, 105, 180, 0.3), 0 15px 50px rgba(255, 182, 193, 0.2);border:1px solid rgba(255, 182, 193, 0.5);position:relative;overflow:hidden}
+    .main-title-container{display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 0px;text-align: center;margin-bottom: 5px;position: relative;}
+    .main-title-emoji-row { display: flex;justify-content: center;gap: 10px;margin-bottom: 5px; }
+    .main-title-emoji{
+      font-size:clamp(20px, 4vw, 30px);
+      flex-shrink:0;
+      text-shadow:0 1px 2px rgba(0,0,0,0.1);
+      line-height:1;
+      font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif;
+      display:inline-block;
+      animation:shake 2s ease-in-out infinite; 
+    }
+    .main-title-emoji:nth-child(1){animation-delay:0s}
+    .main-title-emoji:nth-child(2){animation-delay:.3s}
+    .main-title-emoji:nth-child(3){animation-delay:.6s}
+    @keyframes shake{0%,100%{transform:rotate(0deg) scale(1)}25%{transform:rotate(-8deg) scale(1.05)}75%{transform:rotate(8deg) scale(1.05)}}
+    
+    /* Títulos principales con degradado rosa */
+    .main-title-text{font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(24px,5vw,45px);background: linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip:text;-webkit-text-fill-color:transparent;outline:none;display: block;text-align: center;padding-left: 2px;padding-right: 2px;line-height: 1.2;}
+    .main-title-name {font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(30px, 6.5vw, 55px);background: linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip:text;-webkit-text-fill-color:transparent;outline:none;display: block;margin-top: -10px;text-align: center;padding-left: 2px;padding-right: 2px;line-height: 1.2;}
+    
+    /* ==== FOTOS CON BORDE ROSA ==== */
+    .photo-slot{background:#eee;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;
+      border:4px solid #FFB6C1;
+      box-shadow:inset 0 0 0 2px #FFF0F5, 0 4px 8px rgba(0,0,0,0.2);
+      transition:all .2s ease-in-out;position:relative}
+    
+    .photo-slot:hover{transform:translateY(-3px);
+      box-shadow:inset 0 0 0 2px #FFC0CB, 0 8px 16px rgba(0,0,0,0.3)}
+    
+    .photo-slot img{width:100%;height:100%;object-fit:cover;display:block;aspect-ratio:1/1}.photo-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.95);background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.25));opacity:0;transition:opacity .18s}.photo-slot:hover .photo-overlay{opacity:1}
+    
+    /* Inputs con degradado rosa */
+    .input-highlight{font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(18px, 3.5vw, 24px);background:linear-gradient(to right, #E91E63, #F48FB1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 0 5px rgba(233, 30, 99, 0.5);width:100%;padding:.6rem .8rem;border-radius:10px;border:1px solid rgba(0,0,0,0.2);background-color:rgba(255,255,255,0.9);color:transparent;text-align:center}
+    .input-highlight::placeholder{background:linear-gradient(to right, #E91E63, #F48FB1);-webkit-background-clip:text;-webkit-text-fill-color:rgba(0,0,0,0.6);text-shadow:none}
+    .input-highlight:focus{outline:none;border-color:#D81B60;background-color:#fff;box-shadow:0 0 0 2px rgba(216, 27, 96, 0.3);-webkit-text-fill-color:#333;text-shadow:none}
+    
+    /* Texto de cuerpo rosa */
+    .text-body-highlight{font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(24px, 5vw, 36px);background:linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:1px 1px 8px rgba(216, 27, 96, 0.5);margin-bottom:15px;display:inline-block}
+    .text-preview-highlight{margin-top:12px;font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(20px, 4vw, 28px);background:linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:1px 1px 6px rgba(216, 27, 96, 0.5);display:inline-block}
+    
+    .sunset-bg{background:rgba(255, 248, 250, 0.7);border-radius:0 0 18px 18px;padding:20px;margin:20px -20px -20px -20px;text-align:center;border-top:1px solid rgba(255, 182, 193, 0.3);box-shadow:inset 0 8px 20px rgba(0,0,0,0.05);position:relative}.sunset-bg .text-1{font-size:16px;font-weight:700;color:#333;text-shadow:none}.sunset-bg .text-2{font-size:14px;color:#555;text-shadow:none}.footer-emojis{margin-top:10px;font-size:clamp(20px, 4vw, 30px);text-shadow:0 1px 2px rgba(0,0,0,0.1);display:flex;justify-content:center;gap:8px}.footer-emojis span{
+      display:inline-block;
+      animation:bounce 2s infinite ease-in-out; 
+    }.footer-emojis span:nth-child(1){animation-delay:0s}.footer-emojis span:nth-child(2){animation-delay:.2s}.footer-emojis span:nth-child(3){animation-delay:.4s}.footer-emojis span:nth-child(4){animation-delay:.6s}.footer-emojis span:nth-child(5){animation-delay:.8s}@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+    
+    /* Botones principales rosa */
+    .btn-main {font-family:'pacifico',cursive;font-weight:normal;font-size:clamp(16px, 4vw, 22px);background: rgba(255, 248, 250, 0.92);padding:.8rem 1.2rem;border-radius:15px;display:inline-flex;gap:.6rem;align-items:center;justify-content:center;cursor:pointer;text-decoration:none;box-shadow:0 4px 15px rgba(0,0,0,0.15);border:2px solid rgba(216, 27, 96, 0.4);transition: all 0.2s ease-in-out;color: #333;}
+    
+    /* HOVER BOTÓN rosa/rojo */
+    .btn-main:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(229, 115, 115, 0.3);
+        border-color: #E57373;
+    }
+
+    /* Texto de botón rosa */
+    .btn-text {background-image: linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow:1px 1px 8px rgba(216, 27, 96, 0.5);display: inline-block;line-height: 1;padding-top: 2px;}
+    
+    /* Botón secundario rosa claro */
+    .btn.secondary{font-family:'inter',sans-serif;font-size:clamp(14px, 3.5vw, 18px);background:#FFC0CB;color:#333;border: 2px solid #FFB6C1;padding:.6rem 1rem;background-image: none;-webkit-background-clip: unset;-webkit-text-fill-color: unset;text-shadow: none;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.15);transition: all 0.2s ease-in-out;transform: none;}
+    .btn.secondary:hover {transform: translateY(-2px);box-shadow: 0 6px 15px rgba(0,0,0,0.2);}
+    
+    /* ==== ESTILOS DEL CONTADOR ROSA ==== */
+    .countdown-container {text-align: center;margin-top: 5px;margin-bottom: 20px;}
+    /* Título rosa */
+    .countdown-title {font-family: 'pacifico', cursive;font-size: clamp(22px, 5vw, 32px);font-weight: normal;color: #AD1457;text-shadow: 1px 1px 3px rgba(0,0,0,0.1);margin-bottom: 12px;}
+    .countdown-grid {display: grid;grid-template-columns: repeat(4, 1fr);gap: 12px;max-width: 400px;margin: 0 auto;}
+    /* Borde de caja rosa */
+    .countdown-box {background: rgba(255, 255, 255, 0.6);border: 1px solid rgba(255, 182, 193, 0.5);border-radius: 12px;padding: 10px 5px;box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+    
+    /* MENSAJE FINAL (CONTEO TERMINADO) - ROSA */
+    .countdown-finished {
+        font-family: 'pacifico', cursive;
+        font-size: clamp(20px, 4vw, 28px);
+        font-weight: normal;
+        background: linear-gradient(to right, #D81B60, #F06292); 
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 8px rgba(216, 27, 96, 0.3);
+        padding: 10px; 
+        border: none; 
+        border-radius: 0; 
+        animation: none; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 8px; 
+        line-height: 1.2; 
+    }
+    .countdown-finished .emoji {
+        -webkit-background-clip: unset; 
+        -webkit-text-fill-color: initial; 
+        text-shadow: none; 
+        font-size: clamp(22px, 4.5vw, 32px); 
+        display: inline-block; 
+    }
+
+    /* NÚMEROS CONTADOR - ROSA */
+    .countdown-number {font-size: clamp(24px, 6vw, 36px);font-weight: 800;line-height: 1.1;background: linear-gradient(to right, #D81B60, #F06292);-webkit-background-clip: text;-webkit-text-fill-color: transparent;text-shadow: 0 0 10px rgba(216, 27, 96, 0.2);}
+    /* ETIQUETAS CONTADOR - ROSA */
+    .countdown-label {font-size: 11px;font-weight: 600;color: #AD1457;text-transform: uppercase;letter-spacing: 0.5px;margin-top: 4px;}
+    /* ================================================== */
+
+    /* Confeti */
+    .confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:9999;opacity:0;transition:opacity 1s ease-out;}
+    .confetti-emoji{position:absolute;opacity:0;animation:fall var(--duration) linear forwards;}
+    @keyframes fall{0%{transform:translate(var(--x-start),var(--start-y-offset)) rotateZ(0deg) scale(0);opacity:0}1%{transform:translate(var(--x-start),var(--start-y-offset)) rotateZ(0deg) scale(var(--size));opacity:1}100%{transform:translate(calc(var(--x-start) + var(--x-end-offset)),var(--end-y-offset)) rotateZ(var(--rotation)) scale(calc(var(--size) * .7));opacity:1}}
+
+    @media (max-width:640px){
+      .card{padding:16px}
+      .main-title-container{gap:8px}
+      .main-title-text{font-size:clamp(24px, 6vw, 40px)}
+      .text-body-highlight{font-size:clamp(22px, 5vw, 30px)}
+      .input-highlight,.text-preview-highlight{font-size:clamp(18px, 3.8vw, 22px)}
+      .welcome-card { padding: 25px 30px; } 
+    }
+  </style>
+</head>
+<body class="full-height">
+
+  <svg width="0" height="0" style="position:absolute;z-index:-1;"><defs><linearGradient id="hibiscusGradient" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#F48FB1;stop-opacity:1" /> <stop offset="100%" style="stop-color:#E91E63;stop-opacity:1" /> </linearGradient></defs></svg>
+  
+  <audio id="musicPlayer" loop preload="auto" muted>
+    <source src="Camilo - La Boda (Vid...[EXTENSIÓN DEL ARCHIVO]" type="audio/mp4">
+    <source src="Camilo - La Boda (Vid...[EXTENSIÓN DEL ARCHIVO]" type="audio/mpeg">
+    Tu navegador no soporta audio.
+  </audio>
+  
+  <div id="welcomeScreen" class="center-screen full-height">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+      <div class="welcome-card">
+        <div class="welcome-emojis">
+            <span>👰‍♂️</span><span>❤️</span><span>👰‍♀️</span><span>💖</span><span>🎉</span>
+        </div>
+        <h1 class="welcome-title">¡Nos Casamos!</h1>
+        <p class="welcome-sub">Estás invitado a nuestra boda</p>
+      </div>
+      
+      <button id="enterBtn" class="enter-btn" type="button">
+          <span class="enter-btn-text">Entrar a la <br> invitación</span>
+      </button>
+
+    </div>
+  </div>
+  <div id="invitation" class="invitation">
+    <div class="card" role="main">
+
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        
+        <div class="main-title-container">
+            <div class="main-title-emoji-row">
+                <span class="main-title-emoji">💖</span>
+                <span class="main-title-emoji">👰‍♀️</span>
+                <span class="main-title-emoji">💖</span>
+            </div>
+            <div id="eventTitleLine1" contenteditable="true" class="main-title-text">Te invito a festejar</div>
+            <div id="eventTitleLine2" contenteditable="true" class="main-title-name">Mi Boda ♥️</div>
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center; margin-top: 10px;">
+          <button id="playPauseBtn" class="btn secondary" title="Pausar / Reanudar música">▶️ Reproducir</button>
+        </div>
+        </div>
+      
+      <div class="countdown-container">
+          <div id="countdownFinishedMessage" class="countdown-finished" style="display: none;">
+            <span class="emoji">🎊</span> ¡LLEGÓ EL DÍA! <span class="emoji">🎊</span>
+          </div>
+
+          <div id="countdownGrid" class="countdown-grid">
+              <div class="countdown-box">
+                  <div id="countdown-days" class="countdown-number">00</div>
+                  <div class="countdown-label">Días</div>
+              </div>
+              <div class="countdown-box">
+                  <div id="countdown-hours" class="countdown-number">00</div>
+                  <div class="countdown-label">Horas</div>
+              </div>
+              <div class="countdown-box">
+                  <div id="countdown-minutes" class="countdown-number">00</div>
+                  <div class="countdown-label">Minutos</div>
+              </div>
+              <div class="countdown-box">
+                  <div id="countdown-seconds" class="countdown-number">00</div>
+                  <div class="countdown-label">Segundos</div>
+              </div>
+          </div>
+      </div>
+      <div class="photo-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;"> 
+        <label class="photo-slot" tabindex="0"><input type="file" accept="image/*" class="image-input" style="display:none" /><img id="photo1" src="https://i.ibb.co/67snptsC/IMG-20251030-161702.jpg" alt="Foto 1"/><div class="photo-overlay"></div></label>
+        <label class="photo-slot" tabindex="0"><input type="file" accept="image/*" class="image-input" style="display:none" /><img id="photo2" src="https://i.ibb.co/twQW2HLX/foto1.jpg" alt="Foto 2"/><div class="photo-overlay"></div></label>
+        <label class="photo-slot" tabindex="0"><input type="file" accept="image/*" class="image-input" style="display:none" /><img id="photo3" src="https://i.ibb.co/WWgZpcb9/AGC-20251026-164742859.jpg" alt="Foto 3"/><div class="photo-overlay"></div></label>
+        <label class="photo-slot" tabindex="0"><input type="file" accept="image/*" class="image-input" style="display:none" /><img id="photo4" src="https://i.ibb.co/93g0FQ3X/foto3.jpg" alt="Foto 4"/><div class="photo-overlay"></div></label>
+      </div>
+      
+      <div style="text-align:center;margin-top:20px; position: relative;">
+        <div class="text-body-highlight">Estás invitado a celebrar el día</div>
+        <div style="display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px">
+          <input id="dayInput" class="input-highlight" placeholder="Día (ej: Sábado)" value="Sábado" contenteditable="true"/>
+          <input id="dateInput" class="input-highlight" placeholder="Fecha (ej: 14/02/2026)" value="15/11/2025" contenteditable="true"/>
+          <input id="timeInput" class="input-highlight" placeholder="Hora (ej: 22:00)" value="13:00 - 23:00" contenteditable="true"/>
+        </div>
+        
+        <div style="margin-top:18px;max-width:720px;margin-left:auto;margin-right:auto">
+          <div id="ubicacionTitle" contenteditable="true" class="text-body-highlight" style="margin-bottom:15px;">Ubicación</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+            <button id="openMaps" class="btn-main">📍 <span class="btn-text">Abrir en Google Maps</span></button>
+            </div>
+        </div>
+        <div id="previewWhen" class="text-preview-highlight"></div>
+      </div>
+      
+      <div style="display:flex;gap:12px;align-items:center;justify-content:center;margin-top:18px; position: relative;"><a id="whatsappBtn" class="btn-main" target="_blank" rel="noopener noreferrer">📲 <span class="btn-text">Confirmar por WhatsApp</span></a></div>
+      
+      <div class="sunset-bg"><div class="text-1">¡Te esperamos para celebrar!</div><div class="text-2">Será un día inolvidable. ✨</div></div>
+      
+      <hr style="margin:18px 0; border-color: rgba(216, 27, 96, 0.1);"/>
+      
+      <div style="text-align: center; position: relative;">
+        <div class="footer-emojis">
+          <span class="footer-emoji">❤️</span>
+          <span class="footer-emoji">✨</span>
+          <span class="footer-emoji">👰‍♂️</span>
+          <span class="footer-emoji">✨</span>
+          <span class="footer-emoji">❤️</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="confettiContainer" class="confetti-container"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        
+        // ELEMENTOS DOM
+        const music = document.getElementById('musicPlayer');
+        const welcome = document.getElementById('welcomeScreen');
+        const invitation = document.getElementById('invitation');
+        const enterBtn = document.getElementById('enterBtn'); 
+        const confettiContainer = document.getElementById('confettiContainer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const openMapsBtn = document.getElementById('openMaps');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+        
+        // Elementos del contador
+        const countdownGrid = document.getElementById('countdownGrid');
+        const finishedMessage = document.getElementById('countdownFinishedMessage');
+        const countdownDays = document.getElementById('countdown-days');
+        const countdownHours = document.getElementById('countdown-hours');
+        const countdownMinutes = document.getElementById('countdown-minutes');
+        const countdownSeconds = document.getElementById('countdown-seconds');
+
+        // =======================================================
+        // ** CONFIGURACIÓN CRÍTICA **
+        // =======================================================
+        
+        const EVENT_DATE = new Date('November 15, 2025 00:00:00').getTime(); 
+
+        const MAPS_LINK = "https://maps.google.com/?q=J42G%2B5Q,+La+Rioja,+Argentina&ftid=0x9427d9873396f7e5:0x6bb364cf6f51843b&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ"; 
+        const WHATSAPP_NUMBER = "5493804973331"; 
+        
+        const WHATSAPP_MESSAGE = "¡Confirmo mi presencia para la boda! 👰‍♂️👰‍♀️❤️";
+        
+        whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+        // =======================================================
+
+        let isPlaying = false; 
+        let countdownInterval;
+        let invitationStarted = false; 
+
+        // --- FUNCIONES DE TEMPORIZADOR ---
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = EVENT_DATE - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownGrid.style.display = 'none';
+                finishedMessage.style.display = 'flex'; 
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownDays.textContent = days < 10 ? '0' + days : days;
+            countdownHours.textContent = hours < 10 ? '0' + hours : hours;
+            countdownMinutes.textContent = minutes < 10 ? '0' + minutes : minutes;
+            countdownSeconds.textContent = seconds < 10 ? '0' + seconds : seconds;
+            
+            countdownGrid.style.display = 'grid'; 
+            finishedMessage.style.display = 'none'; 
+        }
+
+        function startCountdown() {
+            updateCountdown(); 
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        // --- Otras Funciones de Comportamiento ---
+        
+        function createConfetti() {
+          const emojis = ['🎊', '😍', '💖', '❤️', '💞', '♥️', '✨', '💓', '💗']; 
+          const totalConfetti = 150; 
+          const totalConfettiEffectDuration = 30000; 
+          const fadeOutContainerDuration = 1000; 
+          
+          confettiContainer.innerHTML = '';
+          
+          for (let i = 0; i < totalConfetti; i++) { 
+            const confetti = document.createElement('span'); 
+            confetti.classList.add('confetti-emoji'); 
+            confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)]; 
+            
+            const randomSize = Math.random() * 0.8 + 0.7; 
+            confetti.style.setProperty('--size', randomSize); 
+            confetti.style.fontSize = `${randomSize * 25}px`; 
+            
+            const initialX = (Math.random() * 140 - 20) + 'vw'; 
+            const startY = - (Math.random() * 100 + 50) + 'px'; 
+            const endXOffset = (Math.random() - 0.5) * 20; 
+            const randomRotation = (Math.random() * 720 - 360) + 'deg'; 
+            
+            confetti.style.setProperty('--x-start', initialX); 
+            confetti.style.setProperty('--start-y-offset', startY); 
+            confetti.style.setProperty('--end-y-offset', '105vh'); 
+            confetti.style.setProperty('--x-end-offset', `${endXOffset}vw`); 
+            confetti.style.setProperty('--rotation', randomRotation); 
+            
+            const individualFallDuration = Math.random() * 8 + 12; 
+            confetti.style.setProperty('--duration', `${individualFallDuration}s`); 
+            confetti.style.animationDelay = `${Math.random() * 15}s`; 
+            
+            confettiContainer.appendChild(confetti); 
+          } 
+          confettiContainer.style.opacity = '1'; 
+          setTimeout(() => { 
+            confettiContainer.style.opacity = '0'; 
+            setTimeout(() => { 
+              confettiContainer.innerHTML = ''; 
+            }, fadeOutContainerDuration); 
+          }, totalConfettiEffectDuration - fadeOutContainerDuration); 
+        }
+
+        // --- Eventos ---
+
+        // 🔑 Evento del Botón de Entrada (Lógica simple y directa)
+        enterBtn.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            
+            if (invitationStarted) return;
+            invitationStarted = true;
+            enterBtn.disabled = true; 
+
+            // === LÓGICA DIRECTA ===
+            // 1. Quitar el silencio y dar PLAY.
+            music.muted = false; 
+            var playPromise = music.play(); 
+
+            // 2. Manejar la promesa (solo para actualizar el botón de pausa)
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Audio permitido. Reproduciendo música desde GitHub.");
+                    isPlaying = true;
+                    playPauseBtn.innerHTML = '⏸️ Pausar';
+                }).catch(error => {
+                    // Aunque se bloquee, la animación sigue
+                    console.warn("Audio bloqueado por el navegador:", error);
+                });
+            }
+
+            // 3. Iniciar la animación INMEDIATAMENTE (sin esperar la música)
+            welcome.style.opacity = '0';
+            
+            setTimeout(() => {
+                welcome.style.display = 'none';
+                invitation.style.display = 'block';
+                
+                setTimeout(() => {
+                    invitation.style.opacity = '1';
+                    createConfetti(); 
+                    startCountdown(); 
+                }, 50); 
+                
+            }, 400); 
+        });
+
+        openMapsBtn.addEventListener('click', () => {
+            if (MAPS_LINK) {
+                window.open(MAPS_LINK, '_blank');
+            } else {
+                alert('¡ERROR! El enlace de Google Maps no está configurado.');
+            }
+        });
+
+        // Estos eventos actualizan el botón de Pausa/Play
+        music.addEventListener('play', () => {
+          isPlaying = true;
+          playPauseBtn.innerHTML = '⏸️ Pausar';
+          playPauseBtn.title = 'Pausar música';
+        });
+
+        music.addEventListener('pause', () => {
+          isPlaying = false;
+          playPauseBtn.innerHTML = '▶️ Reproducir';
+          playPauseBtn.title = 'Reproducir música';
+        });
+
+        playPauseBtn.addEventListener('click', () => {
+          if (isPlaying) {
+            music.pause();
+          } else {
+            music.muted = false;
+            music.play();
+          }
+        });
+        
+        if (invitation.style.display !== 'none') {
+            startCountdown();
+        }
+
+    }); // Fin de DOMContentLoaded
+</script>
+</body>
+</html>
